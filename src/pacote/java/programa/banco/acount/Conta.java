@@ -85,6 +85,8 @@ public class Conta {
             setSaldo(getSaldo() - valorDaTransferencia);
             contaDestino.setSaldo(getSaldo() + valorDaTransferencia);
             System.out.println("Transferencia Realizada");
+            System.out.println("Valor da transferencia: " + valorDaTransferencia);
+            System.out.println("Seu Saldo atual é: " + this.saldo);
         } else {
             System.out.println("Não foi possível realizar a tranferência, tente novamente mais tarde");
         }
