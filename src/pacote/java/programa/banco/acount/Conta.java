@@ -1,6 +1,9 @@
 package pacote.java.programa.banco.acount;
+
 import pacote.java.programa.banco.pessoa.Cliente;
 import programa.banco.ultils.FormatadorBr;
+
+import javax.swing.*;
 
 public class Conta {
     private static int quantidaDeContas;
@@ -15,6 +18,7 @@ public class Conta {
         this.saldo = 0.0;
         quantidaDeContas += 1;
         setConta(quantidaDeContas);
+        this.setAgencia(0);
     }
 
     public int getAgencia() {
@@ -62,21 +66,21 @@ public class Conta {
     public void depositar(double valorDoDeposito) {
         if (valorDoDeposito > 0) {
             setSaldo(getSaldo() + valorDoDeposito);
-            System.out.println(" Seu dinheiro foi depositado ");
-            System.out.println("----------Comprovante----------");
-            System.out.println("Valor depositado: " + valorDoDeposito);
-            System.out.println("Seu Saldo atual é: " + getSaldo());
+            JOptionPane.showMessageDialog(null, ("Seu dinheiro foi depositado\n") +
+                    ("----------Comprovante----------") +
+                    ("\nValor depositado: " + valorDoDeposito) +
+                    ("\n Seu Saldo atual é: " + getSaldo()));
         } else {
-            System.out.println("Não foi possivel realizar o depósito, tente novamente mais tarde");
+            JOptionPane.showMessageDialog(null, "Não foi possivel realizar o depósito, tente novamente mais tarde");
         }
     }
 
     public void sacar(double valorDoSaque) {
         if (this.getSaldo() >= valorDoSaque && valorDoSaque > 0) {
             setSaldo(getSaldo() - valorDoSaque);
-            System.out.println("Saque realizado");
+            JOptionPane.showMessageDialog(null, "Saque Realizado com sucesso");
         } else {
-            System.out.println("Não foi possível realizar o saque, tente novamente mais tarde");
+            JOptionPane.showMessageDialog(null, "ERRO!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -84,11 +88,10 @@ public class Conta {
         if (this.getSaldo() >= valorDaTransferencia && valorDaTransferencia > 0) {
             setSaldo(getSaldo() - valorDaTransferencia);
             contaDestino.setSaldo(getSaldo() + valorDaTransferencia);
-            System.out.println("Transferencia Realizada");
-            System.out.println("Valor da transferencia: " + valorDaTransferencia);
-            System.out.println("Seu Saldo atual é: " + this.saldo);
+            JOptionPane.showMessageDialog(null, ("Transferência realizada com sucesso\n") +
+                    ("\nValor da transferencia" + valorDaTransferencia));
         } else {
-            System.out.println("Não foi possível realizar a tranferência, tente novamente mais tarde");
+            JOptionPane.showMessageDialog(null, "ERRO!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

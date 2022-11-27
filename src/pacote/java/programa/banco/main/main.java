@@ -4,6 +4,7 @@ import pacote.java.programa.banco.acount.Conta;
 
 import pacote.java.programa.banco.pessoa.Cliente;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,18 +21,24 @@ public class main {
 
 
     public static void exibirOpcoes() {
+        int opcoes = 10;
+        try {
+            opcoes = Integer.parseInt(JOptionPane.showInputDialog(
+                       ( "=======================================================\n") +
+                     ( "   <<<<<<<<<<<<<<Bem Vindo ao Banco Santander>>>>>>>>>>>>\n") +
+                      ("  =======================================================\n")+
+            ("                                  INFORME A OPÇÃO DESEJADA:\n")+
+            ("[0]° Para Abrir uma conta conosco,   \n")+
+            ("[1]° Para realizar um saque,        \n")+
+            ("[2]° Para realizar um deposito,    \n")+
+            ("[3]° Para realizar uma transferência,  \n")+
+            ("[4]° Para verificar informações,     \n")+
+            ("[5]° Para encerrar o serviço,         \n")));
 
-        System.out.println("                ======================================================");
-        System.out.println("                <<<<<<<<<<<<<<Bem Vindo ao Banco Santander>>>>>>>>>>>>");
-        System.out.println("                ======================================================");
-        System.out.println("                INFORME A OPÇÃO DESEJADA:");
-        System.out.println("                            ° Para Abrir uma conta conosco,      | [0]");
-        System.out.println("                           I° Para realizar um saque,            | [1]");
-        System.out.println("                           II° Para realizar um deposito,        | [2]");
-        System.out.println("                           III° Para realizar uma transferência, | [3]");
-        System.out.println("                           IV° Para verificar informações,       | [4]");
-        System.out.println("                           V° Para encerrar o serviço,           | [5]");
-        int opcoes = scanner.nextInt();
+        }catch (NumberFormatException nfe){
+            JOptionPane.showMessageDialog(null,"Opção Inválida");
+        }
+
         switch (opcoes) {
             case 0:
                 criarConta();
@@ -55,24 +62,18 @@ public class main {
                 exibirOpcoes();
                 break;
         }
+
     }
 
     private static void realizarTransferencia() {
-        System.out.println("Numero da conta");
-        int contaEnvio = scanner.nextInt();
-        Conta conta = encontrarConta(contaEnvio);
+        Conta conta = encontrarConta(Integer.parseInt(JOptionPane.showInputDialog("Numero da conta de Origem da transferência")));
         if (conta != null) {
-            System.out.println("Numero conta destino");
-            int contaDestino = scanner.nextInt();
-            Conta conta1 = encontrarConta(contaDestino);
+            Conta conta1 = encontrarConta(Integer.parseInt(JOptionPane.showInputDialog("Numero da conta de destino da transferência")));
             if (conta1 != null) {
-                System.out.println("Valor da transferencia");
-                double valorTransferencia = scanner.nextDouble();
+                double valorTransferencia = Double.parseDouble(JOptionPane.showInputDialog("Valor da transferência"));
                 conta.transferir(conta1, valorTransferencia);
             }
-        }
-        exibirOpcoes();
-
+        }exibirOpcoes();
     }
 
     private static void verificarInformacoes() {
@@ -81,54 +82,46 @@ public class main {
                 System.out.println(conta);
             }
         } else {
-            System.out.println("Não existem Contas");
+            JOptionPane.showMessageDialog(null,"ERRO!","ERRO", JOptionPane.ERROR_MESSAGE );
         }
         exibirOpcoes();
     }
 
 
     private static void realizarDeposito() {
-        System.out.println("Para qual conta você deseja depositar? ");
-        System.out.println("Digite numero da conta");
-        int numeroDaConta = scanner.nextInt();
-        Conta conta = encontrarConta(numeroDaConta);
+        Conta conta = encontrarConta(Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta que deseja depositar")));
         if (conta != null) {
-            System.out.println("Valor a ser depositado");
-            double valorDeposito = scanner.nextInt();
+            double valorDeposito = Integer.parseInt(JOptionPane.showInputDialog("Insira o valor a ser depositado"));
             conta.depositar(valorDeposito);
-            System.out.println("Depositado");
         } else {
-            System.out.println("Conta não encontrada");
+            JOptionPane.showMessageDialog(null,"ERRO!","ERRO", JOptionPane.ERROR_MESSAGE );
         }
         exibirOpcoes();
     }
 
     private static void realizarSaque() {
-        System.out.println("Numero da conta");
-        int numeroDaConta = scanner.nextInt();
+        int numeroDaConta = Integer.parseInt(JOptionPane.showInputDialog("Insira o número para Realizar o saque"));
         Conta conta = encontrarConta(numeroDaConta);
         if (conta != null) {
             System.out.println("Valor do saque");
-            double valorDoSaque = scanner.nextDouble();
+            double valorDoSaque = Double.parseDouble(JOptionPane.showInputDialog("Insira o valor para Saque"));
             conta.sacar(numeroDaConta);
-            System.out.println("Saque Realizado");
-        } else {
-            System.out.println("Não foi possivel Sacar");
-            exibirOpcoes();
-        }
+        }exibirOpcoes();
     }
 
     private static void criarConta() {
-        System.out.println("Nome");
-        String nome = scanner.next();
-        System.out.println("CPF");
-        String cpf = scanner.next();
-        System.out.println("Email");
-        String email = scanner.next();
+        String nome = JOptionPane.showInputDialog("Digite seu nome");
+        String cpf = JOptionPane.showInputDialog("Digite seu cpf");
+        String email = JOptionPane.showInputDialog("Digite seu email");
         Cliente cliente = new Cliente(nome, cpf, email);
         Conta conta = new Conta(cliente);
         clientes.add(conta);
-        System.out.println("Conta criada");
+        JOptionPane.showMessageDialog(null,("Conta Criada com sucesso\n")+
+                ("\nNome: " + nome)+
+                ("\nCPF: " + cpf)+
+                ("\nEmail: " + email)+
+                ("\nAgência : " + conta.getAgencia())+
+                ("\nConta : " + conta.getConta()));
         exibirOpcoes();
     }
 
@@ -140,8 +133,9 @@ public class main {
                     ct = conta;
                 }
             }
+        }else{
+            JOptionPane.showMessageDialog(null,"ERRO!","ERRO", JOptionPane.ERROR_MESSAGE );
         }
         return ct;
     }
-
 }
